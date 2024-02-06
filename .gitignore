@@ -162,3 +162,7 @@ cython_debug/
 
 # DS store
 .DS_Store
+
+# Data
+imgs/
+ckpts/
