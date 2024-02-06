@@ -1,16 +1,14 @@
 # LLaMA-Adapter-V2 Multi-modal
 
-## News
-* [Oct 11, 2023] Release LLaMA-Adapter V2.1 and evaluation on MME.
-* [July 5, 2023] Release pre-traininig and fine-tuning codes.
-* [May 26, 2023] Initial release.
-
+## Notes
+Copy of OpenGVLab's LLaMA-Adapter-V2 for screenshot understanding.
 
 ## Setup
 
 * setup up a new conda env and install necessary packages.
   ```bash
   conda create -n llama_adapter_v2 python=3.8 -y
+  conda activate llama_adapter_v2
   pip install -r requirements.txt
   ```
 
@@ -36,11 +34,10 @@ from PIL import Image
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
-llama_dir = "/path/to/LLaMA/"
+llama_dir = "/path/to/LLaMA/" 
 
 # choose from BIAS-7B, LORA-BIAS-7B, LORA-BIAS-7B-v21
-model, preprocess = llama.load("BIAS-7B", llama_dir, llama_type="7B", device=device)
-model.eval()
+model, preprocess = llama.load("BIAS-7B", llama_dir, llama_type="llama-2-7b", device=device) # llama_type is concatenated after llama_dir, e.g., "/path/to/LLaMA/llama-2-7b"
 
 prompt = llama.format_prompt("Please introduce this painting.")
 img = Image.fromarray(cv2.imread("../docs/logo_v1.png"))
@@ -49,11 +46,6 @@ img = preprocess(img).unsqueeze(0).to(device)
 result = model.generate(img, [prompt])[0]
 
 print(result)
-```
-
-The output will look like the following:
-```
-The painting features a cute white lama, or llama, standing on a wooden floor. The llama is holding a variety of tools and accessories, such as a paintbrush, a pencil, a ruler, a pair of scissors, and a paint can. The llama is dressed in a suit, which adds a touch of sophistication to the scene. The painting is a creative and whimsical representation of a person or animal holding various tools and accessories, making it an interesting and unique piece of art.
 ```
 
 ## Evaluation
